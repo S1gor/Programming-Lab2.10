@@ -14,6 +14,14 @@ int askUserNumberTask()
 	return choice;
 }
 
+int strLen(char* str)
+{
+	int counter = 0;
+	for (int i = 0; str[i] != '\0'; i++)
+		counter++;
+	return counter;
+}
+
 char choiceLetter()
 {
 	char let;
@@ -21,13 +29,60 @@ char choiceLetter()
 	scanf_s("%c", &let);
 	return let;
 }
-void letterMet(char* str, char let)
+void letterMet(char* str, char letter)
 {
 	int counter = 0;
-	for (int i = 0; i < strlen(str); i++)
-		if (str[i] == let)
+	int len = strLen(str) + 1;
+
+	for (int i = 0; i < len; i++)
+		if (str[i] == letter)
 			counter++;
-	printf("Буква '%c' встретилась %d раз(а).", let, counter);
+	printf("Буква '%c' встретилась %d раз(а).", letter, counter);
+}
+
+bool chekPalindrom(char* mas)
+{
+	int len = strlen(mas);
+	for (int i = 0; i < len / 2; i++)
+		if (mas[i] != mas[len - i - 1])
+			return false;
+	return true;
+}
+void findLenAndPalindrom(char* str)
+{
+	printf("\n");
+	int len = strLen(str) + 1;
+	char mas[20] = { 0 };
+
+	int n = 0;
+	bool flag = true;
+	for (int i = 0; i < len; i++)
+	{
+		mas[n] = str[i];
+		if (str[i] == ' ' || str[i] == '\0')
+		{
+			mas[n] = '\0';
+			if (chekPalindrom(mas))
+				printf("%s - Палиндром\n", mas);
+			else
+			{
+				printf("%s(%d) - Не палиндром\n", mas, strLen(mas));
+				if (strLen(mas) % 2 != 0)
+				{
+					flag = false;
+					printf("Не каждое слово, не являющаяся палиндромом, имеет чётную длину.\n");
+					break;
+				}
+			}
+			for (int j = 0; j < n; j++)
+				mas[j] = ' ';
+			n = 0;
+			continue;
+		}
+		n++;
+	}
+	if (flag)
+		printf("Каждое слово, не являющаяся палиндромом, имеет чётную длину.\n");
 }
 
 void recurringSymbol(char* wrd1, char* wrd2, char* c)
@@ -53,15 +108,6 @@ void recurringSymbol(char* wrd1, char* wrd2, char* c)
 	}
 }
 
-bool chekPalindrom(char* mas)
-{
-	int len = strlen(mas);
-	for (int i = 0; i < len / 2; i++)
-		if (mas[i] != mas[len - i - 1])
-			return false;
-	return true;
-}
-
 int main()
 {
 	system("chcp 1251"); system("cls");
@@ -72,9 +118,9 @@ int main()
 	{
 		char str[256];
 		printf("Введите строку:\n"); gets_s(str);
-		char let = choiceLetter();
+		char letter = choiceLetter();
 
-		letterMet(str, let);
+		letterMet(str, letter);
 		break;
 	}
 	case 10:
@@ -82,17 +128,7 @@ int main()
 		char str[256];
 		printf("Введите строку:\n"); gets_s(str);
 
-		char mas[20];
-
-		for (int i = 0; i < strlen(str); i++)
-		{
-			mas[i] = str[i];
-				
-		}
-		if (chekPalindrom(mas))
-			printf("Палиндром\n");
-		else
-			printf("Не палиндром\n");
+		findLenAndPalindrom(str);
 		break;
 	}
 	case 19:
