@@ -39,7 +39,7 @@ char registrReplacement(char letter)
 void letterMet(char* str, char letter,char letter2)
 {
 	int counter = 0;
-	int len = strLen(str) + 1;
+	int len = strLen(str);
 
 	for (int i = 0; i < len; i++)
 		if (str[i] == letter || str[i] == letter2)
@@ -70,6 +70,8 @@ void findLenAndPalindrom(char* str)
 	for (int i = 0; i < len; i++)
 	{
 		mas[n] = str[i];
+		if (str[i] == ' ' && (str[i + 1] == ' ' || str[i + 1] == '\0'))
+			continue;
 		if (str[i] == ' ' || str[i] == '\0')
 		{
 			mas[n] = '\0';
